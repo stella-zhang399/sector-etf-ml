@@ -141,12 +141,20 @@ def build_model_panel(df):
     )
 
     # ---------------------------------
+    # Continuous next-month outcome
+    # ---------------------------------
+
+    panel["next_excess_return"] = (
+        panel["next_etf_return"]
+            - panel["next_spy_return"]
+)
+
+    # ---------------------------------
     # Binary target
     # ---------------------------------
 
     panel["target"] = (
-        panel["next_etf_return"]
-        > panel["next_spy_return"]
+        panel["next_excess_return"] > 0
     ).astype("Int64")
 
     # Target is undefined when next-month

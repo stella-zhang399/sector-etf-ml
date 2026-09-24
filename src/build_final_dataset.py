@@ -119,7 +119,10 @@ def create_final_sample(df):
         "yield_spread_10y_2y_change_1m",
     ]
 
-    required_columns = required_features + ["target"]
+    required_columns = required_features + [
+        "target",
+        "next_excess_return",
+    ]
 
     final = (
         df.dropna(subset=required_columns)
