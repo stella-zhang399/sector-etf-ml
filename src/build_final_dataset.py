@@ -117,6 +117,16 @@ def create_final_sample(df):
         "DFF_change_1m",
         "VIXCLS_change_1m",
         "yield_spread_10y_2y_change_1m",
+
+        # Additional macro features
+        "BAA10Y",
+        "BAA10Y_change_1m",
+        "DCOILWTICO",
+        "DCOILWTICO_change_1m",
+        "CPI_YOY_lag1",
+        "CPI_YOY_change_1m_lag1",
+        "UNRATE_lag1",
+        "UNRATE_change_1m_lag1",
     ]
 
     required_columns = required_features + [

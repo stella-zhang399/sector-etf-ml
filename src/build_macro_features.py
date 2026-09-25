@@ -70,17 +70,21 @@ def add_macro_features(monthly):
 
     df = monthly.copy()
 
-    # Yield curve spread
+    # -----------------------------
+    # Existing macro features
+    # -----------------------------
+
     df["yield_spread_10y_2y"] = (
         df["DGS10"] - df["DGS2"]
     )
 
-    # Monthly changes
     change_columns = [
         "DGS10",
         "DGS2",
         "DFF",
         "VIXCLS",
+        "BAA10Y",
+        "DCOILWTICO",
         "yield_spread_10y_2y",
     ]
 
@@ -89,7 +93,80 @@ def add_macro_features(monthly):
             df[column].diff()
         )
 
-    return df
+    # -----------------------------
+    # Inflation
+    # -----------------------------
+
+    # Year-over-year CPI inflation
+    cpi_yoy = (
+        df["CPIAUCSL"]
+        .pct_change(periods=12)
+        * 100
+    )
+
+    # CPI for month t is generally not known
+    # by the end of month t, so lag it one month.
+    df["CPI_YOY_lag1"] = (
+        cpi_yoy.shift(1)
+    )
+
+    df["CPI_YOY_change_1m_lag1"] = (
+        df["CPI_YOY_lag1"].diff()
+    )
+
+    # -----------------------------
+    # Labor market
+    # -----------------------------
+
+    # Same idea: use the previous month's
+    # unemployment reading.
+    df["UNRATE_lag1"] = (
+        df["UNRATE"].shift(1)
+    )
+
+    df["UNRATE_change_1m_lag1"] = (
+        df["UNRATE_lag1"].diff()
+    )
+
+    # -----------------------------
+    # Keep only leakage-safe features
+    # -----------------------------
+
+    feature_columns = [
+        "Date",
+
+        # Existing levels
+        "DGS10",
+        "DGS2",
+        "DFF",
+        "VIXCLS",
+        "yield_spread_10y_2y",
+
+        # Existing changes
+        "DGS10_change_1m",
+        "DGS2_change_1m",
+        "DFF_change_1m",
+        "VIXCLS_change_1m",
+        "yield_spread_10y_2y_change_1m",
+
+        # Credit conditions
+        "BAA10Y",
+        "BAA10Y_change_1m",
+
+        # Oil
+        "DCOILWTICO",
+        "DCOILWTICO_change_1m",
+
+        # Inflation — publication lag respected
+        "CPI_YOY_lag1",
+        "CPI_YOY_change_1m_lag1",
+
+        # Labor market — publication lag respected
+        "UNRATE_lag1",
+        "UNRATE_change_1m_lag1",
+    ]
+
+    return df[feature_columns]
 
 
 # -----------------------------

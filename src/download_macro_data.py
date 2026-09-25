@@ -9,13 +9,20 @@ from pandas_datareader import data as pdr
 # -----------------------------
 
 FRED_SERIES = [
-    "DGS10",    # 10-Year Treasury Yield
-    "DGS2",     # 2-Year Treasury Yield
-    "DFF",      # Effective Federal Funds Rate
-    "VIXCLS",   # VIX
+    # Existing
+    "DGS10",
+    "DGS2",
+    "DFF",
+    "VIXCLS",
+
+    # New
+    "BAA10Y",       # Baa corporate credit spread vs. 10Y Treasury
+    "DCOILWTICO",   # WTI crude oil price
+    "CPIAUCSL",     # Consumer Price Index
+    "UNRATE",       # Unemployment rate
 ]
 
-START_DATE = "2015-01-01"
+START_DATE = "2013-01-01"
 END_DATE = "2025-12-31"
 
 
