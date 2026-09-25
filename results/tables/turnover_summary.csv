@@ -1,0 +1,3 @@
+strategy,mean_turnover,median_turnover,max_turnover,total_turnover
+12m_momentum,0.23529411764705882,0.3333333333333333,1.0,8.0
+regime_aware_ml,0.3333333333333333,0.3333333333333333,1.0,11.333333333333332
